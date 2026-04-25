@@ -1,7 +1,65 @@
 {
   "version": 1,
-  "author": "Uri Shaked",
+  "author": "Projeto IoT - Iluminacao Inteligente Industrial",
   "editor": "wokwi",
-  "parts": [ { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 0, "left": 0, "attrs": {} } ],
-  "connections": [ [ "esp:TX", "$serialMonitor:RX", "", [] ], [ "esp:RX", "$serialMonitor:TX", "", [] ] ]
+  "parts": [
+    {
+      "type": "board-esp32-devkit-c-v4",
+      "id": "esp",
+      "top": 0,
+      "left": 0,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-rgb-led",
+      "id": "rgb1",
+      "top": -80,
+      "left": 330,
+      "attrs": { "common": "cathode" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r_red",
+      "top": -90,
+      "left": 240,
+      "attrs": { "value": "220" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r_grn",
+      "top": -58,
+      "left": 240,
+      "attrs": { "value": "220" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r_blu",
+      "top": -26,
+      "left": 240,
+      "attrs": { "value": "220" }
+    },
+    {
+      "type": "wokwi-photoresistor-sensor",
+      "id": "ldr",
+      "top": 150,
+      "left": -190,
+      "attrs": {}
+    }
+  ],
+  "connections": [
+    ["esp:TX",   "$serialMonitor:RX", "", []],
+    ["esp:RX",   "$serialMonitor:TX", "", []],
+
+    ["rgb1:R",   "r_red:2",   "red",    []],
+    ["r_red:1",  "esp:25",    "red",    []],
+    ["rgb1:G",   "r_grn:2",   "green",  []],
+    ["r_grn:1",  "esp:26",    "green",  []],
+    ["rgb1:B",   "r_blu:2",   "blue",   []],
+    ["r_blu:1",  "esp:27",    "blue",   []],
+    ["rgb1:COM", "esp:GND.1", "black",  []],
+
+    ["ldr:VCC",  "esp:3V3",   "red",    []],
+    ["ldr:GND",  "esp:GND.2", "black",  []],
+    ["ldr:AO",   "esp:34",    "orange", []]
+  ]
 }
