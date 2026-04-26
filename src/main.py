@@ -6,45 +6,41 @@ led_g = PWM(Pin(26), freq=1000)
 led_b = PWM(Pin(27), freq=1000)
 
 ldr = ADC(Pin(34))
-ldr.atten(ADC.ATTN_11DB)
+ldr.atten(ADC.ATTN_11DB)  
 
-pir = Pin(13, Pin.IN)  # HIGH = presenca detectada
+pir = Pin(13, Pin.IN)   
 
 INTERVALO_SENSOR_MS  = 500
 INTERVALO_PRINT_MS   = 1000
+LDR_LIMIAR_ESCURO = 2500   
+LDR_LIMIAR_CLARO  = 1800   
+PIR_TOLERANCIA_CICLOS = 6 
 
-LDR_LIMIAR_ESCURO    = 2500
-LDR_LIMIAR_CLARO     = 1800
+DESLIGADO = "DESLIGADO" 
+ECO       = "ECO"      
+ATIVO     = "ATIVO"    
 
-PIR_TOLERANCIA_CICLOS = 6   # 6 x 500ms = 3s de ausencia antes de desligar
+estado_atual     = DESLIGADO
+ciclos_ausencia  = 0
 
-estado_atual    = "DESLIGADO"
-ciclos_ausencia = 0
+t_ultimo_sensor  = ticks_ms()
+t_ultimo_print   = ticks_ms()
+t_entrada_estado = ticks_ms()
 
-t_ultimo_sensor = ticks_ms()
-t_ultimo_print  = ticks_ms()
+tempo_por_estado = { DESLIGADO: 0, ECO: 0, ATIVO: 0 }
 
 def set_rgb(r, g, b):
     led_r.duty(r)
     led_g.duty(g)
     led_b.duty(b)
 
-def apagar():
-    set_rgb(0, 0, 0)
-
-def iluminar_eco():
-    set_rgb(80, 60, 0)
-
-def iluminar_ativo():
-    set_rgb(800, 800, 800)
-
-def aplicar_estado(estado):
-    if estado == "DESLIGADO":
-        apagar()
-    elif estado == "ECO":
-        iluminar_eco()
-    elif estado == "ATIVO":
-        iluminar_ativo()
+def aplicar_saida(estado):
+    if estado == DESLIGADO:
+        set_rgb(0, 0, 0)        
+    elif estado == ECO:
+        set_rgb(80, 60, 0)      
+    elif estado == ATIVO:
+        set_rgb(800, 800, 800) 
 
 def ler_sensores():
     return {
@@ -52,42 +48,53 @@ def ler_sensores():
         "presenca": pir.value() == 1
     }
 
-def atualizar_estado(leituras):
-    global estado_atual, ciclos_ausencia
+def calcular_proximo_estado(leituras):
+    global ciclos_ausencia
 
     presenca = leituras["presenca"]
     ldr_val  = leituras["ldr"]
     escuro   = ldr_val > LDR_LIMIAR_ESCURO
     claro    = ldr_val < LDR_LIMIAR_CLARO
 
-    novo_estado = estado_atual  # assume sem mudanca
-
     if presenca:
         ciclos_ausencia = 0
 
-        if estado_atual == "DESLIGADO":
-            novo_estado = "ATIVO" if escuro else "ECO"
-        elif estado_atual == "ECO" and escuro:
-            novo_estado = "ATIVO"
-        elif estado_atual == "ATIVO" and claro:
-            novo_estado = "ECO"
+        if estado_atual == DESLIGADO:
+            return ATIVO if escuro else ECO
+        if estado_atual == ECO and escuro:
+            return ATIVO
+        if estado_atual == ATIVO and claro:
+            return ECO
 
     else:
         ciclos_ausencia += 1
         if ciclos_ausencia >= PIR_TOLERANCIA_CICLOS:
-            novo_estado = "DESLIGADO"
+            return DESLIGADO
 
-    if novo_estado != estado_atual:
-        print("[ESTADO] {} -> {}".format(estado_atual, novo_estado))
-        estado_atual = novo_estado
-        aplicar_estado(estado_atual)
+    return estado_atual
 
-apagar()
+def transicionar(novo_estado):
+    global estado_atual, t_entrada_estado
+
+    if novo_estado == estado_atual:
+        return
+
+    agora = ticks_ms()
+    tempo_por_estado[estado_atual] += ticks_diff(agora, t_entrada_estado)
+    t_entrada_estado = agora
+
+    print("[FSM] {} -> {}".format(estado_atual, novo_estado))
+    estado_atual = novo_estado
+    aplicar_saida(estado_atual)
+
+aplicar_saida(DESLIGADO)
 print("Teste")
-print("=== Incremento 2: LDR + PIR — ECO / ATIVO ===")
-print("PIR sem presenca: LED apagado")
-print("PIR com presenca + escuro: LED branco (ATIVO)")
-print("PIR com presenca + claro:  LED ambar  (ECO)")
+print("=== Inc3: FSM — DESLIGADO / ECO / ATIVO ===")
+print("LDR GPIO34 | PIR GPIO13 | LED RGB GPIO25/26/27")
+print("---")
+print("Como testar:")
+print("  LDR: slider baixo = escuro | slider alto = claro")
+print("  PIR: clique no sensor para simular presenca")
 print("---")
 
 while True:
@@ -95,13 +102,14 @@ while True:
 
     if ticks_diff(agora, t_ultimo_sensor) >= INTERVALO_SENSOR_MS:
         t_ultimo_sensor = agora
-        leituras = ler_sensores()
-        atualizar_estado(leituras)
+        leituras    = ler_sensores()
+        prox_estado = calcular_proximo_estado(leituras)
+        transicionar(prox_estado)
 
     if ticks_diff(agora, t_ultimo_print) >= INTERVALO_PRINT_MS:
         t_ultimo_print = agora
         leituras = ler_sensores()
-        print("LDR={} | PIR={} | Estado={}".format(
+        print("LDR={} PIR={} Estado={}".format(
             leituras["ldr"],
             "SIM" if leituras["presenca"] else "NAO",
             estado_atual
