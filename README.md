@@ -11,6 +11,8 @@
 ![mpremote](https://img.shields.io/badge/mpremote_--_1.28.0-991664?style=for-the-badge&logo=mpremote&logoColor=white)
 ![Docker](https://img.shields.io/badge/Dev_Container-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 
+<img width="1283" height="692" alt="Captura de tela 2026-04-26 200348" src="https://github.com/user-attachments/assets/65528964-4982-413b-920d-f4253b301c67" />
+
 </div>
 
 ### 👤 Identificação do Candidato
@@ -26,6 +28,8 @@ Este projeto implementa um **sistema embarcado de iluminação inteligente** sim
 O sistema monitora continuamente dois parâmetros do ambiente — **luminosidade** e **presença humana** — e decide automaticamente se deve ligar, reduzir ou desligar a iluminação. O objetivo é simular um cenário real de eficiência energética: a luz só acende quando há alguém no ambiente e somente se o local estiver escuro.
 
 O usuário interage com o sistema ajustando o slider do sensor de luminosidade e clicando no sensor de movimento para simular presença.
+
+Uma outra vizualização do sistema pode ser vista [aqui](https://wokwi.com/projects/462406924388798465).
 
 
 
@@ -178,5 +182,5 @@ O projeto consolidou conceitos fundamentais de sistemas embarcados: arquitetura 
 
 ---
  
-> ✅ Simulação funcional no Wokwi com todos os componentes do incremento 3  
+> ✅ Simulação funcional no Wokwi  
 > ✅ Código modular, comentado e organizado em camadas
