@@ -1,331 +1,182 @@
-# Processo Seletivo – Intensivo Maker | IoT
-## Etapa Prática – Sistemas Embarcados
+<div align=center>
 
-Bem-vindo(a) à **etapa prática do processo seletivo para o Intensivo Maker | IoT**.
+###### Processo Seletivo — Intensivo Maker | IoT
+# Iluminação inteligente industrial com otimização energética
 
-Esta atividade tem como objetivo avaliar suas competências em **Sistemas Embarcados**, com foco em **organização de projeto, lógica de firmware e simulação de hardware**, a partir da aplicação prática dos conhecimentos adquiridos nos cursos EAD da etapa anterior.
 
-> 🎯 **Objetivo principal**  
-> Avaliar sua capacidade de **planejar, estruturar e desenvolver** uma solução funcional de sistemas embarcados, seguindo boas práticas de engenharia.
+![Versão](https://img.shields.io/badge/versão-v1.0.0-light?style=for-the-badge)
+![Python](https://img.shields.io/badge/micropython-3776AB?style=for-the-badge&logo=micropython&logoColor=white)
+![ESP32](https://img.shields.io/badge/ESP32-E7352C?style=for-the-badge&logo=espressif&logoColor=white)
+![Wokwi](https://img.shields.io/badge/Wokwi-005A00?style=for-the-badge&logo=wokwi&logoColor=white)
+![mpremote](https://img.shields.io/badge/mpremote_--_1.28.0-991664?style=for-the-badge&logo=mpremote&logoColor=white)
+![Docker](https://img.shields.io/badge/Dev_Container-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 
----
-
-## 🏁 Passo 0 – Antes de Tudo
-
-Se você **nunca utilizou Git ou GitHub**, não se preocupe.  
-Siga atentamente os passos abaixo — eles fazem parte do processo de aprendizagem esperado.
-
----
-
-### 1️⃣ Criação de Conta no GitHub
-
-1. Acesse: https://github.com  
-2. Clique em **Sign up**  
-3. Crie sua conta gratuita seguindo as instruções da plataforma  
-
-> 📌 O GitHub será utilizado para:
-> - Envio do seu projeto  
-> - Versionamento do código  
-> - Correção e validação automática via GitHub Actions  
-
----
-
-### 2️⃣ Instalação do Git
-
-O **Git** é a ferramenta responsável pelo controle de versões do seu código.
-
-### Windows
-Baixe e instale o **Git Bash**:  
-https://git-scm.com/downloads
-
-### Linux / macOS
-Verifique se o Git já está instalado:
-
-```bash
-git --version
-```
-> Caso não esteja, instale pelo gerenciador de pacotes do seu sistema.
-
-## ⚙ Passo 1 – Preparando o Ambiente
-
-Para desenvolver o desafio, você deverá criar uma cópia deste repositório no seu GitHub.
-
-### 1️⃣ Fork do Repositório
-No canto superior direito desta página, clique em Fork
-
-<img width="219" height="45" alt="image" src="https://github.com/user-attachments/assets/5d629626-513a-445c-ba0f-e5bb3e225187" />
-
-
-Uma cópia do repositório será criada no seu perfil do GitHub
-
-> 🔎 O Fork permite que você trabalhe de forma independente, sem alterar o repositório original do processo seletivo.
-
-### 2️⃣ Clone do Repositório
-
-No repositório do seu Fork, clique em **<> Code**
-
-<img width="149" height="52" alt="image" src="https://github.com/user-attachments/assets/abbd331b-a005-4633-89c6-afd16acbe828" />
-
-Copie a URL e execute no terminal:
-
-```bash
-git clone https://github.com/SEU_USUARIO/nome-do-repositorio.git
-cd nome-do-repositorio
-```
-
-> O comando git clone cria uma cópia local do repositório para desenvolvimento.
-
-### 3️⃣ Preparação do Ambiente de Execução
-
-Você pode executar o projeto de duas formas. Escolha apenas uma.
-
-#### 🔹 Opção A – Ambiente Python Local
-
-**Requisitos:**
-
-- Python 3.10 ou 3.11
-- pip
-
-**Instale as dependências:**
-
-```bash
-pip install -r requirements.txt
-```
-
-#### 🔹 Opção B – Dev Container (Recomendado)
-
-Este repositório inclui um Dev Container, garantindo um ambiente padronizado.
-
-**Requisitos:**
-
-- VS Code
-- Docker instalado
-- Extensão Dev Containers
-
-**Passos:**
-
-1. Abra o repositório no VS Code
-2. Clique em “Reopen in Container”
-3. Aguarde a criação automática do ambiente
-
-> ➡️ Todas as dependências serão instaladas automaticamente.
-
-## 🔐 Passo 2 – Criando sua API Key do Wokwi
-
-A simulação do projeto será executada automaticamente via GitHub Actions, utilizando o Wokwi CLI.
-
-Para isso, você precisa gerar uma API Key.
-
-1. Acesse: https://wokwi.com/dashboard/ci
-2. Faça login (Google ou GitHub)
-3. Clique em Generate API Token
-4. Copie a chave gerada (exemplo: wokwi-xxxxxxxx)
-
->⚠️ Importante
-- Nunca faça commit dessa chave
-- Ela deve ser armazenada apenas como secret no GitHub
-
-## 🔒 Passo 3 – Configurando a API Key no GitHub (Secrets)
-
-**No repositório do seu Fork:**
-
-1. Vá em Settings
-2. Acesse Secrets and variables → Actions
-3. Clique em New repository secret
-4. Nome: WOKWI_API_KEY
-5. Valor: sua chave gerada
-6. Salve
-
-> ✔️ As GitHub Actions do template já estão preparadas para usar essa variável automaticamente.
-
-## 🧠 Passo 4 – Desafio Técnico
-
-Você deverá desenvolver um projeto de sistemas embarcados simulados, utilizando Python e Wokwi.
-
-### 📁 Estrutura mínima esperada
-
-```text
-/project
- ├── src/
- │   └── main.py        # Código principal do projeto
- ├── wokwi.toml         # Configuração da simulação
- ├── diagram.json       # Circuito no Wokwi
- └── README.md          # Explicação do seu projeto
-```
-
-> Você pode expandir essa estrutura se desejar, desde que mantenha os arquivos essenciais.
-
-### 🛠 Como Desenvolver seu Projeto
-
-O desenvolvimento acontece principalmente nos arquivos abaixo:
-
-#### 1️⃣ src/main.py
-
-- Código Python executado na simulação
-- Implementa a lógica do sistema embarcado
-- Exemplos: controle de LEDs, leitura de sensores, estados, temporizações, etc.
-
-#### 2️⃣ diagram.json
-
-- Define o hardware virtual do projeto
-- Componentes como:
-  - LEDs
-  - Botões
-  - Sensores
-  - Placa microcontroladora
-
-#### 3️⃣ wokwi.toml
-
-- Configura a simulação:
-  - Tipo de placa
-  - Framework
-  - Dependências adicionais
-
-#### 4️⃣ Commit e Push
-
-Após suas alterações:
-
-```bash
-git add .
-git commit -m "Descrição clara do que foi feito"
-git push
-```
-### ⚙ Execução Automática (GitHub Actions)
-
-A cada push, o GitHub Actions irá automaticamente:
-
-- Executar o pipeline de build
-- Rodar a simulação via Wokwi CLI
-- Validar que o projeto executa sem erros
-
-### 📌 Caso algo falhe:
-
-- Vá até a aba Actions
-- Analise os logs da execução
-- Corrija e envie novamente
-
-## 📊 Critérios de Avaliação
-
-Esta etapa será avaliada considerando:
-
-- Funcionamento correto da simulação
-- Código organizado e legível
-- Estrutura de arquivos correta
-- Uso adequado do Wokwi
-- Commits claros e bem descritos
-- Projeto executando sem falhas nas Actions
-
----
-
-## 📎 Submissão Final
-
-Após concluir o desenvolvimento:
-
-1. Verifique se o projeto **executa sem erros** nas GitHub Actions  
-2. Confirme que todos os arquivos obrigatórios estão presentes  
-3. Copie o link do **seu repositório no GitHub**
-
-📤 Envie o link conforme as orientações do processo seletivo na plataforma **Moodle**.
-
----
-
-## 📝 Relatório do Candidato
-
-O arquivo **`README.md` do seu repositório** deve ser utilizado como o  
-**relatório final do desafio técnico**.
-
-Preencha todas as seções abaixo de forma **clara, objetiva e técnica**.
-
-> 💡 **Dica importante**  
-> Não é necessário um relatório extenso.  
-> O principal critério é demonstrar **clareza nas decisões técnicas**, organização e entendimento do sistema embarcado desenvolvido.
-
----
+</div>
 
 ### 👤 Identificação do Candidato
 
-- **Nome completo:**  
-- **GitHub:**  
+- **Nome completo:** _Jetro Kepler Gomes Alencar Gonzaga Viana_
 
----
+
 
 ## 1️⃣ Visão Geral da Solução
 
-Descreva, em poucas palavras:
+Este projeto implementa um **sistema embarcado de iluminação inteligente** simulado em ESP32 com MicroPython, voltado para ambientes industriais.
 
-- Qual é o objetivo do seu projeto  
-- O que o sistema embarcado simulado faz  
-- Como o usuário interage com ele (se aplicável)
+O sistema monitora continuamente dois parâmetros do ambiente — **luminosidade** e **presença humana** — e decide automaticamente se deve ligar, reduzir ou desligar a iluminação. O objetivo é simular um cenário real de eficiência energética: a luz só acende quando há alguém no ambiente e somente se o local estiver escuro.
 
----
+O usuário interage com o sistema ajustando o slider do sensor de luminosidade e clicando no sensor de movimento para simular presença.
+
+
 
 ## 2️⃣ Arquitetura do Sistema Embarcado
 
-Explique a arquitetura lógica do seu projeto, abordando:
+### Fluxo principal do `main.py`
 
-- Fluxo principal do programa (`main.py`)  
-- Estrutura de estados, loops ou temporizações  
-- Como os componentes interagem entre si  
+O firmware é organizado em três camadas independentes, seguindo o princípio de separação de responsabilidades:
 
-Se desejar, utilize tópicos ou um pequeno diagrama em texto.
+```
+Leitura (ler_sensores)
+    ↓
+Decisão (calcular_proximo_estado)
+    ↓
+Atuação (transicionar → aplicar_saida)
+```
 
----
+Essa separação garante que a lógica de decisão nunca dependa diretamente do hardware — facilitando testes, manutenção e expansão.
+
+### Máquina de Estados Finitos (FSM)
+
+O comportamento do sistema é controlado por uma FSM com três estados:
+
+| Estado | Condição | LED |
+|---|---|---|
+| `DESLIGADO` | Sem presença detectada | Apagado |
+| `ECO` | Presença + ambiente já claro | Âmbar fraco (R=80, G=60, B=0) |
+| `ATIVO` | Presença + ambiente escuro | Branco pleno (R=800, G=800, B=800) |
+
+**Tabela de transições:**
+
+```
+DESLIGADO + presença + escuro  → ATIVO
+DESLIGADO + presença + claro   → ECO
+ECO       + escuro             → ATIVO
+ATIVO     + claro              → ECO
+ECO/ATIVO + ausência por 3s   → DESLIGADO
+```
+
+### Temporização não-bloqueante
+
+O loop principal usa `ticks_ms()` e `ticks_diff()` para controlar dois ciclos independentes:
+
+- **Ciclo de sensor:** a cada 500ms — lê os sensores e atualiza o estado
+- **Ciclo de print:** a cada 1000ms — imprime o status no terminal serial
+
+Isso garante que o sistema nunca "trava" esperando um temporizador, podendo responder a eventos em qualquer momento.
+
+### Histerese no LDR
+
+Dois limiares distintos evitam que o LED fique oscilando quando a luminosidade está na fronteira:
+
+```
+ADC > 2500  →  ambiente escuro  →  permite iluminação plena
+ADC < 1800  →  ambiente claro   →  reduz ou desliga
+Entre 1800 e 2500: mantém o estado atual (zona morta)
+```
+
+### Tolerância do PIR
+
+O PIR detecta **movimento**, não presença contínua. Quando a pessoa fica imóvel, o sensor pode perder o sinal. Para evitar desligar prematuramente, o sistema aguarda **6 ciclos consecutivos sem detecção** (equivalente a 3 segundos) antes de transitar para `DESLIGADO`.
+
 
 ## 3️⃣ Componentes Utilizados na Simulação
 
-Liste os principais componentes definidos no `diagram.json`, por exemplo:
+| Componente | Tipo no Wokwi | Pino ESP32 | Função |
+|---|---|---|---|
+| ESP32 DevKit C V4 | `board-esp32-devkit-c-v4` | — | Microcontrolador principal |
+| LED RGB | `wokwi-rgb-led` | GPIO 25 / 26 / 27 | Representa a iluminação do ambiente |
+| Resistor 220Ω (×3) | `wokwi-resistor` | — | Proteção dos canais R, G e B do LED |
+| Sensor de luminosidade | `wokwi-photoresistor-sensor` | GPIO 34 (ADC) | Mede a claridade do ambiente |
+| Sensor de presença | `wokwi-pir-motion-sensor` | GPIO 13 (Digital) | Detecta movimento no ambiente |
 
-- Tipo de placa utilizada  
-- LEDs, botões, sensores, atuadores, etc.  
-- Função de cada componente no sistema  
+### Conceitos técnicos dos componentes
 
----
+**PWM (Modulação por Largura de Pulso):** técnica que controla a potência entregue a um componente variando a proporção de tempo em que o sinal fica em nível alto. Com `duty=800` o LED recebe 78% da potência máxima; com `duty=80` recebe apenas 8%. É assim que se controla o brilho do LED RGB.
+
+**ADC (Conversor Analógico-Digital):** converte a tensão analógica do LDR (0 a 3.3V) em um número inteiro (0 a 4095). Quanto mais escuro o ambiente, maior a resistência do LDR, maior a tensão no pino e maior o valor lido pelo ADC.
+
+**LDR (Resistor Dependente de Luz):** resistor cuja resistência varia com a luz. Em ambientes escuros sua resistência aumenta; em ambientes claros diminui. No Wokwi é controlado por um slider que representa a intensidade luminosa em lux.
+
+**PIR (Sensor Infravermelho Passivo):** detecta variações de radiação infravermelha causadas pelo calor corporal humano em movimento. Saída digital: HIGH quando detecta movimento, LOW quando não detecta.
+
 
 ## 4️⃣ Decisões Técnicas Relevantes
 
-Explique brevemente decisões importantes tomadas durante o desenvolvimento, como:
+**Máquina de estados finitos como estrutura central:** os estados tornam o comportamento do sistema explícito e previsível. Cada transição é claramente definida na tabela de estados, e a função `calcular_proximo_estado` não tem efeitos colaterais — apenas calcula e retorna, sem modificar nada.
 
-- Organização do código  
-- Uso de funções, estados ou constantes  
-- Estratégias para temporização ou controle lógico  
+**Separação em três camadas:** `ler_sensores()` nunca decide nada; `calcular_proximo_estado()` nunca aciona hardware; `aplicar_saida()` nunca lê sensores. Esse desacoplamento facilita a expansão — para adicionar um novo sensor, basta alterar `ler_sensores()` e `calcular_proximo_estado()`, sem tocar no restante.
 
----
+**Histerese no LDR:** limiares assimétricos (2500 para ligar, 1800 para desligar) criam uma zona morta que absorve oscilações naturais do sensor, evitando o efeito de "piscar" do LED na fronteira entre claro e escuro.
+
+**Tolerância de ausência no PIR:** o PIR detecta movimento, não presença estática. A tolerância de 6 ciclos (3 segundos) compensa o comportamento real do sensor e evita falsos desligamentos quando a pessoa está imóvel.
+
+**Registro de tempo por estado:** a variável `tempo_por_estado` acumula quantos milissegundos o sistema passou em cada estado. Isso serve como base para métricas de eficiência energética em incrementos futuros.
 
 ## 5️⃣ Resultados Obtidos
 
-Descreva o comportamento final do sistema:
+O sistema funciona corretamente na simulação Wokwi, apresentando o seguinte comportamento validado:
 
-- O que funciona corretamente  
-- Quais requisitos foram atendidos  
-- Resultado observado na simulação do Wokwi  
+- **Sem presença:** LED permanece apagado independentemente da luminosidade
+- **Presença + ambiente escuro:** LED acende em branco pleno (estado `ATIVO`)
+- **Presença + ambiente claro:** LED acende em âmbar fraco (estado `ECO`)
+- **Transição entre ECO e ATIVO:** responde em até 500ms à mudança do slider do LDR
+- **Retorno ao DESLIGADO:** ocorre após 3 segundos sem detecção de movimento
+- **Terminal serial:** exibe transições de estado e status periódico a cada 1 segundo
+- **Pipeline CI/CD:** executa com sucesso no GitHub Actions, validando o `print("Teste")` esperado
+
+### Como testar no Wokwi
+
+1. Gere o `fs.bin` com o comando Docker e reinicie a simulação
+```
+docker build --no-cache -t esp32-builder . && \
+docker run --name esp32-fs-tmp esp32-builder /bin/bash ; \
+docker cp esp32-fs-tmp:/fs.bin . ; \
+docker rm esp32-fs-tmp
+```
+2. **Teste SEM presença:** Clique no LDR, ajuste o slider diminuindo e aumentando a 'lux' e perceba que o led não liga, pois não há nenhum tipo de presença; 
+3. **Teste de luminosidade:** com o PIR ativo, mova o slider do LDR:
+   - Slider baixo (pouca luz ou 'lux') → LED branco — estado `ATIVO`
+   - Slider alto (muita luz) → LED âmbar — estado `ECO`
+
+4. **Teste de tolerância:** pare de clicar no PIR e aguarde 3 segundos — o LED apaga
 
 ---
 
-## 6️⃣ Comentários Adicionais (Opcional)
+## 6️⃣ Comentários Adicionais
 
-Utilize este espaço para comentar, se desejar:
+### Configuração do ambiente de desenvolvimento
 
-- Dificuldades encontradas  
-- Limitações da solução  
-- Melhorias que você faria com mais tempo  
-- Principais aprendizados durante o desafio  
+O repositório inclui `pyrightconfig.json` e `.vscode/settings.json` para silenciar avisos falsos do Pylance e do cSpell no Visual Studio Code. As bibliotecas machine, utime e dht são nativas do MicroPython e não existem no ambiente Python padrão — por isso o analisador as acusa como não resolvidas, embora o projeto funcione corretamente. Portanto, adicionei os arquivos de configuração supracitados para omitir tais avisos.
+
+### Limitações da solução
+
+- O potenciômetro de simulação de consumo energético e o sensor DHT22 (temperatura/umidade) estão planejados para incrementos futuros e não estão presentes nesta versão
+- O modo MANUAL e o modo FESTA (controle por botão) também são incrementos planejados
+- A simulação de consumo energético é representativa, não real
+
+### Melhorias futuras
+
+- Incremento 4: sensor DHT22 para conforto ambiental e estado `CONFORTO`
+- Incremento 5: potenciômetro simulando consumo e estado `ALERTA`
+- Incremento 6: coleta e exibição de métricas operacionais completas
+- Incremento 7: botão para modo manual com override do sistema automático
+- Incremento 8: modo FESTA com animação RGB
+
+### Aprendizados
+
+O projeto consolidou conceitos fundamentais de sistemas embarcados: arquitetura de firmware orientada a estados, temporização não-bloqueante, leitura de sensores analógicos e digitais, controle PWM de atuadores e integração de pipeline CI/CD com simulação de hardware virtual.
 
 ---
-
-> ✅ Este relatório faz parte da avaliação técnica.  
-> Clareza, objetividade e organização são tão importantes quanto o funcionamento do código.
-
----
-
-## 🆘 Suporte
-
-Em caso de dúvidas:
-
-- Consulte o material dos cursos EAD
-- Leia atentamente este README
-- Analise os logs das GitHub Actions
-- Utilize os canais oficiais para contato com os instrutores
-
-Boa sorte no processo seletivo.
-Mostre sua capacidade de pensar como um engenheiro de sistemas embarcados.
-****
+ 
+> ✅ Simulação funcional no Wokwi com todos os componentes do incremento 3  
+> ✅ Código modular, comentado e organizado em camadas
